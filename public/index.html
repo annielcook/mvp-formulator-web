@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MVP Formulator AI</title>
-</head>
-<body>
-  <h1>MVP Formulator AI Agent</h1>
-  <textarea id="userInput" rows="10" cols="80" placeholder="Enter your solution to a civic problem..."></textarea><br>
-  <button onclick="submitPrompt()">Submit</button>
-  <pre id="output"></pre>
 
-  <script>
-    async function submitPrompt() {
-      const input = document.getElementById('userInput').value;
-      const res = await fetch('/api/formulate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input })
-      });
-      const data = await res.json();
-      document.getElementById('output').textContent = data.result;
-    }
-  </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP Formulator AI</title>
+</head>
+
+<body>
+    <h1>MVP Formulator AI Agent</h1>
+    <textarea id="userInput" rows="10" cols="80" placeholder="Enter your solution to a civic problem..."></textarea><br>
+    <button onclick="submitPrompt()">Submit</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function submitPrompt() {
+            const input = document.getElementById('userInput').value;
+
+            try {
+                const res = await fetch('/api/formulate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ input })
+                });
+
+                const data = await res.json();
+                document.getElementById('output').textContent = data.result;
+
+            } catch (err) {
+                document.getElementById('output').textContent = `⚠️ Error: ${err.message}`;
+            }
+        }
+    </script>
+
 </body>
+
 </html>
