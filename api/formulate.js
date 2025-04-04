@@ -5,7 +5,7 @@ export const config = {
 };
 export default async function handler(req, res) {
     try {
-        const { input } = req.body;
+        const { input } = req.body || {};
 
         if (!process.env.OPENAI_API_KEY) {
             return res.status(500).json({ result: "Missing OpenAI API key in environment variables." });
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'gpt-4o',
+                model: 'gpt-3.5-turbo',
                 messages: [{ role: 'user', content: prompt }]
             })
         });
